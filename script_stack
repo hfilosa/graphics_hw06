@@ -1,0 +1,20 @@
+translate
+200 300 0
+xrotate
+30
+yrotate
+30
+zrotate
+-30
+box
+0 0 0 100 100 100
+push
+circle
+0 0 20
+push
+translate
+100 200 0
+torus
+0 0 50 20
+display
+quit
