@@ -181,7 +181,8 @@ void parse_file ( char * filename,
       //line[strlen(line)-1]='\0';      
       sscanf(line, "%lf %lf %lf", &x, &y, &z);
       transform = make_scale(x, y, z);
-      matrix_mult(transform,st->data[ st->top ]);
+      matrix_mult(st->data[ st->top ],transform);
+      copy_matrix(transform,st->data[ st->top ]);
       free_matrix(transform);
       //print_matrix(transform);
     }
@@ -191,7 +192,8 @@ void parse_file ( char * filename,
       //      line[strlen(line)-1]='\0';      
       sscanf(line, "%lf %lf %lf", &x, &y, &z);
       transform = make_translate(x, y, z);
-      matrix_mult(transform,st->data[ st->top ]);
+      matrix_mult(st->data[ st->top ],transform);
+      copy_matrix(transform,st->data[ st->top ]);
       free_matrix(transform);
       //print_matrix(transform);
     }
@@ -210,7 +212,8 @@ void parse_file ( char * filename,
       sscanf(line, "%lf", &angle);
       angle = angle * (M_PI / 180);
       transform = make_rotY( angle);
-      matrix_mult(transform,st->data[ st->top ]);
+      matrix_mult(st->data[ st->top ],transform);
+      copy_matrix(transform,st->data[ st->top ]);
       free_matrix(transform);
     }
     else if ( strncmp(line, "zrotate", strlen(line)) == 0 ) {
@@ -219,7 +222,8 @@ void parse_file ( char * filename,
       sscanf(line, "%lf", &angle);
       angle = angle * (M_PI / 180);
       transform = make_rotZ( angle);
-      matrix_mult(transform,st->data[ st->top ]);
+      matrix_mult(st->data[ st->top ],transform);
+      copy_matrix(transform,st->data[ st->top ]);
       free_matrix(transform);
     }
     else if ( strncmp(line, "ident", strlen(line)) == 0 ) {
