@@ -32,4 +32,4 @@ clean:
 
 run:
 	make all
-	./main script_stack
+	./main script_robot
