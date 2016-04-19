@@ -79,8 +79,9 @@ void parse_file ( char * filename,
 
   FILE *f;
   char line[256];
-  struct matrix * tmp=new_matrix(4,1);
   struct matrix * transform;
+  struct matrix * tmp=new_matrix(4,1);
+  ident(tmp);
   double angle;
   color c;
 
@@ -90,8 +91,7 @@ void parse_file ( char * filename,
   
   clear_screen(s);
 
-  struct stack * st;
-  st= new_stack();
+  struct stack * st=new_stack();
 
   if ( strcmp(filename, "stdin") == 0 ) 
     f = stdin;
@@ -183,7 +183,6 @@ void parse_file ( char * filename,
       transform = make_scale(x, y, z);
       matrix_mult(st->data[ st->top ],transform);
       copy_matrix(transform,st->data[ st->top ]);
-      free_matrix(transform);
       //print_matrix(transform);
     }
     else if ( strncmp(line, "translate", strlen(line)) == 0 ) {
@@ -203,7 +202,8 @@ void parse_file ( char * filename,
       sscanf(line, "%lf", &angle);
       angle = angle * (M_PI / 180);
       transform = make_rotX( angle);
-      matrix_mult(transform,st->data[ st->top ]);
+      matrix_mult(st->data[ st->top ],transform);
+      copy_matrix(transform,st->data[ st->top ]);
       free_matrix(transform);
     }
     else if ( strncmp(line, "yrotate", strlen(line)) == 0 ) {
@@ -253,17 +253,15 @@ void parse_file ( char * filename,
       tmp->lastcol = 0;
     }
     else if ( strncmp(line, "quit", strlen(line)) == 0 ) {
-      free_stack(st);
-      free_matrix(tmp);
-      free_matrix(transform);
       return;
     }
     else if ( line[0] != '#' ) {
       printf("Invalid command\n");
     }
   }
-  
+  free_stack(st);
   free_matrix(tmp);
+  free_matrix(transform);
   fclose(f);
   //printf("END PARSE\n");
 }
